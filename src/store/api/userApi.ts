@@ -1,13 +1,26 @@
 import {logout, setUser} from "../userSlice"
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 interface IGenericResponse {
-    status: string;
-    message: string;
+    message?: string;
+    error?: string;
+}
+interface ILoginResponse{
+  access_token: string;
+  token_type: string;
+  expires_in: number;
 }
 export const userApi = createApi({
     reducerPath: 'userApi',
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_QUERY + "/auth",
+        prepareHeaders: (headers) => {
+          const token = localStorage.getItem('token')
+          // If we have a token set in state, let's assume that we should be passing it.
+          if (token) {
+            headers.set('authorization', `Bearer ${token}`);
+          }
+          return headers;
+      },
     }),
     endpoints: builder => ({
         registerUser: builder.mutation<IGenericResponse, IUserInput>({
@@ -19,7 +32,7 @@ export const userApi = createApi({
               };
             },
         }),
-        loginUser: builder.mutation<{ access_token: string; status: string },IUserInput>({
+        loginUser: builder.mutation<ILoginResponse,IUserInput>({
             query(user) {
                 return {
                 url: 'login',
@@ -37,25 +50,29 @@ export const userApi = createApi({
         logoutUser: builder.mutation<void, void>({
             query() {
               return {
-                url: 'logout'
+                url: 'logout',
+                method: 'POST'
               };
             },
             async onQueryStarted(args, {dispatch, queryFulfilled}){
               await queryFulfilled;
               dispatch(logout());
+              localStorage.removeItem('token');
             }
         }),
         getMe: builder.query<IUser, null>({
             query() {
               return {
-                url: 'me'
+                url: 'me',
+                method: 'POST'
               };
             },
-            transformResponse: (result: { data: { user: IUser } }) =>
-              result.data.user,
+             transformResponse: (data: { user: IUser }) =>
+              data.user,
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
               try {
-                const { data } = await queryFulfilled;
+                const {data} = await queryFulfilled;
+                console.log(data)
                 dispatch(setUser(data));
               } catch (error) {}
             },

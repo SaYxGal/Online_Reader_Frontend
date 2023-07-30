@@ -1,0 +1,71 @@
+.bookWrapper{
+    display: flex;
+    flex-direction: row;
+    border: solid black 1px;
+    max-width: 500px;
+    margin: 10px 0px 10px 0px;
+}
+.bookWrapper figure{
+    border: thin #c0c0c0 solid;
+    border-radius: 2px;
+    display: flex;
+    flex-flow: column;
+    padding: 5px;
+    max-width: 180px;
+    height: 200px;
+}
+.bookWrapper figure img{
+  max-width: 180px;
+  max-height: 250px;
+}
+.bookWrapper figure figcaption{
+    background-color: #222;
+    color: #fff;
+    font: italic smaller sans-serif;
+    padding: 3px;
+    text-align: center;
+}
+.bookBody{
+    display: flex;
+    border-left: thin #c0c0c0 solid;
+    max-width: 220px;
+    padding: 5px;
+    flex-direction: column;
+}
+.bookBody p{
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* количество строк */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-height: 20%;
+}
+.bookGenres{
+    display: flex;
+    flex-wrap: wrap;
+}
+.bookGenres div{
+    background-color: burlywood;
+    border-radius: 2px;
+    text-align: center;
+    font-weight: 600;
+    padding: 2px;
+    margin: 2px;
+    height: fit-content;
+    color: black
+}
+.link{
+    margin-top: auto;
+}
+@media screen and (max-width: 500px) {
+    .bookWrapper {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      max-width: 235px;
+    }
+    .bookBody{
+        border-top: thin #c0c0c0 solid;
+    }
+}

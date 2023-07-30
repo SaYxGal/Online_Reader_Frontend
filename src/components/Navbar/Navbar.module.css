@@ -1,0 +1,33 @@
+.Navbar {
+    width: 100%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    display: flex;
+    flex-direction: row;
+    background-color: #333;
+}
+.Navbar :last-child{
+    margin-left: auto;
+}
+.Navbar .Link {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+.Navbar .Link:hover {
+    background-color: #111;
+    border-left: white solid 1px;
+    border-right: white solid 1px;
+}
+@media screen and (max-width: 500px) {
+    .Navbar {
+      flex-direction: column;
+    }
+    .Navbar :last-child{
+        margin-left: 0;
+    }
+}
