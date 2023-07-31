@@ -42,8 +42,9 @@ export const userApi = createApi({
             },
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
                 try {
-                    await queryFulfilled;
-                    await dispatch(userApi.endpoints.getMe.initiate(null));
+                    const response = await queryFulfilled;
+                    localStorage.setItem('token', response.data.access_token);
+                    await dispatch(userApi.endpoints.getMe.initiate());
                 } catch (error) {}
             },
         }),
@@ -60,19 +61,19 @@ export const userApi = createApi({
               localStorage.removeItem('token');
             }
         }),
-        getMe: builder.query<IUser, null>({
+        getMe: builder.query<IUser, void>({
             query() {
               return {
                 url: 'me',
                 method: 'POST'
               };
             },
-             transformResponse: (data: { user: IUser }) =>
-              data.user,
+            transformResponse: (data:{user: IUser}) =>{
+              return data.user;
+            },
             async onQueryStarted(args, { dispatch, queryFulfilled }) {
               try {
                 const {data} = await queryFulfilled;
-                console.log(data)
                 dispatch(setUser(data));
               } catch (error) {}
             },

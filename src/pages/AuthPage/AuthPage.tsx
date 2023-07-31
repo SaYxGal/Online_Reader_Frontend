@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import {Link, Navigate, useNavigate} from 'react-router-dom'
 import cl from "./AuthPage.module.css"
-import { useLoginUserMutation, useRegisterUserMutation } from '../../store/api/userApi';
+import { useGetMeQuery, useLoginUserMutation, useRegisterUserMutation } from '../../store/api/userApi';
 
 interface AuthPageProps{
     isLoginPage: boolean
@@ -23,7 +23,6 @@ export default function AuthPage({isLoginPage}: AuthPageProps): JSX.Element {
             loginUser(user).unwrap().then((payload) =>{
                 setError('');
                 setUser({name: '', email: '', password: '', repeatPassword: ''});
-                localStorage.setItem('token', payload.access_token);
                 navigate('/')
             }).catch((error) => {
                 setError(error.data.error);

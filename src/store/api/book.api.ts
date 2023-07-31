@@ -1,15 +1,37 @@
 import { IBook, IBookFull } from "../../types/book.types";
 import { api } from "./api";
 import { IBookData } from './../../types/book.types';
-
+interface IFilterParams{
+    title?:string,
+    genres?: number[]
+    page?: number,
+    perPage?: number
+}
+interface IPaginationValues{
+    count: number
+    current_page: number
+    per_page: number
+    total: number
+    total_pages: number
+}
 export const bookApi = api.injectEndpoints({
     endpoints: builder => ({
-        getBooks: builder.query<IBook[], null>({
-            query: () => '/books',
-            providesTags: (result = [], error, arg) => [
-                'Book' as const,
-                ...result.map(({ id }) => ({ type: 'Book' as const, id }))
-              ]
+        getBooks: builder.query<{data:IBook[], pagination:IPaginationValues}, IFilterParams>({
+            query: (params) => ({
+                url: '/books',
+                params: {...params}
+            }),
+            transformResponse: (data: { data: IBook[], pagination: IPaginationValues }) =>{
+                return {data: data.data, pagination:data.pagination}
+            },
+            providesTags: (result, error, arg) =>
+                result
+                ?
+                    [
+                        ...result.data.map(({ id }) => ({ type: 'Book' as const, id })),
+                        { type: 'Book', id: 'PARTIAL-LIST' },
+                    ]   
+                : [{ type: 'Book', id: 'PARTIAL-LIST' }],
         }),
         getBook: builder.query<IBookFull, number>({
             query: (bookId) => `/books/${bookId}`,
@@ -39,9 +61,10 @@ export const bookApi = api.injectEndpoints({
                 url: `/books/${bookId}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: () => [{
-                type: 'Book'
-            }]
+            invalidatesTags: () => [
+                { type: 'Book'},
+                { type: 'Book', id: 'PARTIAL-LIST' },
+            ]
         })
     })
 })

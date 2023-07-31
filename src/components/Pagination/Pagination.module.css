@@ -1,0 +1,14 @@
+.pagination{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+.pagination_elem{
+    border: solid 1px gray;
+    padding: 5px;
+    text-align: center;
+    cursor: pointer;
+}
+.pagination_elem.active{
+    border: solid 2px darkgray;
+}
