@@ -3,12 +3,17 @@ import { api } from "./api";
 
 export const genreApi = api.injectEndpoints({
     endpoints: builder => ({
-        getGenres: builder.query<IGenre[], null>({
+        getGenres: builder.query<IGenre[], void>({
             query: () => '/genres',
-            providesTags: (result = [], error, arg) => [
-                'Genre' as const,
-                ...result.map(({ id }) => ({ type: 'Genre' as const, id }))
-              ]
+            transformResponse: (data: { data: IGenre[]}) =>{
+                return data.data;
+            },
+            providesTags: (result = [], error, arg) => {
+                return [
+                { type: 'Genre', value: 'LIST' },
+                ...result.map(({ id }) => ({ type: 'Genre' as const, id })),
+                ];
+              },
         }),
         getGenre: builder.query<IGenre, number>({
             query: (genreId) => `/genres/${genreId}`,
@@ -21,7 +26,7 @@ export const genreApi = api.injectEndpoints({
                 method: 'POST'
             }),
             invalidatesTags: () => [{
-                type: 'Genre'
+                type: 'Genre', value: 'LIST' 
             }]
         }),
         updateGenre: builder.mutation<null, IGenre>({
@@ -38,9 +43,15 @@ export const genreApi = api.injectEndpoints({
                 url: `/genres/${genreId}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: () => [{
-                type: 'Genre'
-            }]
+            invalidatesTags: (result, error, id) => [
+                { type: 'Genre', id},
+            ]
         })
     })
 })
+export const {useGetGenreQuery,
+     useGetGenresQuery,
+     useCreateGenreMutation,
+     useUpdateGenreMutation, 
+     useDeleteGenreMutation,
+     useLazyGetGenresQuery} = genreApi;

@@ -1,0 +1,26 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background: #2D2C2D;
+    height: 100%;
+    flex-grow: 10;
+    background: linear-gradient(225deg, #2D2C2D, #FFFFFF);
+}
+.container p{
+    width: 500px;
+    text-align: center;
+    font-size: medium;
+    font-family: sans-serif;
+}
+.container button{
+    cursor: pointer;
+    background-color: rgba(105, 105, 105, 0.5);
+    border: 2px dotted black;
+    border-radius: 5px;
+    color: whitesmoke;
+    padding: 5px;
+    text-align: center;
+    margin: 5px;
+}

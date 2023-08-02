@@ -33,7 +33,7 @@ export const bookApi = api.injectEndpoints({
                     ]   
                 : [{ type: 'Book', id: 'PARTIAL-LIST' }],
         }),
-        getBook: builder.query<IBookFull, number>({
+        getBook: builder.query<IBook, number>({
             query: (bookId) => `/books/${bookId}`,
             providesTags: (result, error, arg) => [{ type: 'Book' as const, id: arg }]
         }),
@@ -43,9 +43,9 @@ export const bookApi = api.injectEndpoints({
                 url: '/books',
                 method: 'POST'
             }),
-            invalidatesTags: () => [{
-                type: 'Book'
-            }]
+            invalidatesTags: (result, error, arg) => [
+                { type: 'Book' as const, id: 'PARTIAL-LIST' }
+            ]
         }),
         updateBook: builder.mutation<null, IBook>({
             query: (book) => ({
@@ -53,19 +53,19 @@ export const bookApi = api.injectEndpoints({
                 url: `/books/${book.id}`,
                 method: 'PATCH'
             }),
-            invalidatesTags: (result, error, arg) => [{ type: 'Book', id: arg.id }]
+            invalidatesTags: (result, error, arg) => [{ type: 'Book', id: arg.id }, {type: 'Book', id: 'PARTIAL-LIST'}]
         }),
         deleteBook: builder.mutation<null, number>({
-            query: (bookId) => ({
-                body: bookId,
-                url: `/books/${bookId}`,
+            query: (id) => ({
+                body: id,
+                url: `/books/${id}`,
                 method: 'DELETE'
             }),
-            invalidatesTags: () => [
-                { type: 'Book'},
+            invalidatesTags: (result, error, id) => [
+                { type: 'Book', id},
                 { type: 'Book', id: 'PARTIAL-LIST' },
             ]
         })
     })
 })
-export const {useGetBooksQuery, useGetBookQuery, useCreateBookMutation} = bookApi;
+export const {useGetBooksQuery, useGetBookQuery, useLazyGetBookQuery, useCreateBookMutation} = bookApi;
