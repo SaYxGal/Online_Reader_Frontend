@@ -1,7 +1,6 @@
 import { IPage } from '../../App'
 import {Link, useNavigate} from 'react-router-dom'
 import cl from './Navbar.module.css'
-import React from 'react'
 import { useLogoutUserMutation } from '../../store/api/userApi'
 
 interface INavbarProps{
@@ -19,9 +18,9 @@ export default function Navbar({pages}: INavbarProps) {
         }
         {
           localStorage.getItem('token')?
-          <button className={cl.link} onClick={() => logout().then(() => navigate('/'))}>Выйти</button>
+          <button className={cl.Link} onClick={() => logout().then(() => navigate('/'))}>Выйти</button>
           : 
-          <Link className={cl.link} to='/login'>Войти</Link>
+          <Link className={cl.Link} to='/login'>Войти</Link>
         }
     </ul>
   )

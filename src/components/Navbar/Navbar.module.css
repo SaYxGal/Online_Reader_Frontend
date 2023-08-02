@@ -17,6 +17,7 @@
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+    cursor: pointer;
 }
 .Navbar .Link:hover {
     background-color: #111;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import {Link, Navigate, useNavigate} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import cl from "./AuthPage.module.css"
-import { useGetMeQuery, useLoginUserMutation, useRegisterUserMutation } from '../../store/api/userApi';
+import { useLoginUserMutation, useRegisterUserMutation } from '../../store/api/userApi';
 
 interface AuthPageProps{
     isLoginPage: boolean

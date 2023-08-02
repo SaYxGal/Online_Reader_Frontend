@@ -1,7 +1,7 @@
 interface IUser{
     id: string,
     name: string,
-    role: string
+    role: "ADMIN"|"USER"
 }
 interface IUserInput {
     name: string,
