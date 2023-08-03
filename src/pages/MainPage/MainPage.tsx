@@ -15,7 +15,7 @@ export default function MainPage():JSX.Element {
         user 
         ? 
         <div>
-          <button onClick={() => navigate('/books/create')}>Создать книгу</button>
+          <button onClick={() => navigate('/books/store/0')}>Создать книгу</button>
         </div>
         :
         <p> Для публикации и комментирования книг необходимо пройти регистрацию.</p>
