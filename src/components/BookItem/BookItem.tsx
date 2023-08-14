@@ -1,29 +1,74 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import cl from "./BookItem.module.css"
-import { IBook } from '../../types/book.types'
-interface IBookItemProps{
-  book: IBook
+import cl from "./BookItem.module.css";
+import { IBook } from "../../types/book.types";
+import {
+  Box,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Chip,
+  Typography,
+} from "@mui/material";
+import { useNavigate } from "react-router-dom";
+interface IBookItemProps {
+  book: IBook;
 }
-export default function BookItem({book}: IBookItemProps) {
+export default function BookItem({ book }: IBookItemProps) {
+  const navigate = useNavigate();
   return (
-    <div className={cl.bookWrapper}>
-        <figure>
-            <img src="https://www.themealdb.com/images/media/meals/uyqrrv1511553350.jpg" alt="Book image"/>
-            <figcaption>{book.title}</figcaption>
-        </figure>
-        <div className={cl.bookBody}>
-            <p>{book.description}</p>
-            <h3>Жанры:</h3>
-            <div className={cl.bookGenres}>
-              {
-                book.genres.map((genre) =>(
-                  <div key={genre.id}>{genre.name}</div>
-                ))
-              }
-            </div>
-            <Link className={cl.link} to={`/books/${book.id}`}>Подробнее...</Link>
-        </div>
-    </div>
-  )
+    <Card className={cl.card} sx={{ display: "flex", width:"550px" }}>
+      <CardActionArea
+        className={cl.bookWrapper}
+        sx={{ display: "flex", justifyContent:"space-between" }}
+        onClick={() => navigate(`/books/${book.id}`)}
+      >
+        <Box
+          sx={{ display: "flex", flexDirection: "column", maxWidth: "300px" }}
+        >
+          <CardContent sx={{ flex: "1 0 auto" }}>
+            <Typography component="div" variant="h5">
+              {book.title}
+            </Typography>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", pl: 1, pb: 1 }}
+            >
+              <Typography
+                variant="subtitle1"
+                color="text.primary"
+                component="div"
+              >
+                Описание
+              </Typography>
+              <Typography
+                className={cl.text}
+                variant="body2"
+                color="text.secondary"
+              >
+                {book.description}
+              </Typography>
+            </Box>
+          </CardContent>
+          <Typography
+            variant="subtitle1"
+            color="text.primary"
+            component="div"
+            sx={{ pl: 2 }}
+          >
+            Жанры
+          </Typography>
+          <Box sx={{ display: "flex", flexWrap: "wrap", pl: 1, pb: 1 }}>
+            {book.genres.map((item) => (
+              <Chip label={item.name} key={item.id} />
+            ))}
+          </Box>
+        </Box>
+        <CardMedia
+          component="img"
+          sx={{ width: 250 }}
+          image="/vite.svg"
+          alt="Изображение книги"
+        />
+      </CardActionArea>
+    </Card>
+  );
 }

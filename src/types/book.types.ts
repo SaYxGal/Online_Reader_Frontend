@@ -9,5 +9,6 @@ export interface IBook{
 }
 export interface IBookFull extends IBook{
     chapters: IChapterInfo[],
+    userId: string
 }
 export interface IBookData extends Omit<IBook, 'id'>{}

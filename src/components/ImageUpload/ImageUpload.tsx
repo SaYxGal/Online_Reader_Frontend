@@ -99,7 +99,7 @@ export default function ImageUpload({
         >
           <Stack justifyContent="center" sx={{ p: 1, textAlign: "center" }}>
             <Typography sx={{ color: "#ccc" }}>
-              {limit > 1 ? "Browse files to upload" : "Browse file to upload"}
+              {limit > 1 ? "Выберите файлы для загрузки" : "Выберите файл для загрузки"}
             </Typography>
             <div>
               <img
@@ -109,7 +109,7 @@ export default function ImageUpload({
               />
             </div>
             <Typography variant="body1" component="span">
-              <strong>Supported Files</strong>
+              <strong>Поддерживаемые форматы</strong>
             </Typography>
             <Typography variant="body2" component="span">
               JPG, JPEG, PNG

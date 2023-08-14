@@ -78,6 +78,7 @@ export const bookApi = api.injectEndpoints({
                     method: 'POST',
                 };
               },
+            invalidatesTags: (result, error, arg) => [{ type: 'Book' as const, id: arg.id }]
         })
     })
 })

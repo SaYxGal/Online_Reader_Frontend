@@ -6,6 +6,7 @@ import { useUploadBookChapterMutation } from "../../store/api/book.api";
 import { Params, useNavigate, useParams } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
 import FileUpload from "../../components/ImageUpload/ImageUpload";
+import {ImSpinner3} from "react-icons/im"
 import {
   Box,
   Button,
@@ -15,6 +16,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { dark } from "@mui/material/styles/createPalette";
 const chapterUploadSchema = object({
     title: z.string().min(5),
     pages: array(z.instanceof(File)).min(1),
@@ -24,7 +26,7 @@ export default function ChapterUploadPage() {
   const params: Params = useParams();
   const navigate = useNavigate();
   const id: number = Number(params.id);
-  const [uploadImages] = useUploadBookChapterMutation();
+  const [uploadImages, {isLoading}] = useUploadBookChapterMutation();
   const methods = useForm<IFormInput>({
     resolver: zodResolver(chapterUploadSchema),
   });
@@ -42,14 +44,15 @@ export default function ChapterUploadPage() {
   return (
     <ThemeProvider theme>
       <CssBaseline />
-      <Container maxWidth={false}>
+      <Container
+       maxWidth={false}>
         <Box
           display="flex"
           sx={{
             justifyContent: "center",
             alignItems: "center",
-            height: "100vh",
             flexGrow: "1",
+            marginTop: "1em"
           }}
         >
           <Box display="flex" flexDirection="column" sx={{ width: "30%" }}>
@@ -62,6 +65,7 @@ export default function ChapterUploadPage() {
               >
                 <TextField
                   label="Заголовок"
+                  sx={{width: "100%"}}
                   {...methods.register('title')}
                   defaultValue="Заголовок 1"
                   helperText={methods.formState.errors.title?.message}
@@ -76,7 +80,9 @@ export default function ChapterUploadPage() {
                   Загрузка изображений для страниц
                 </Typography>
                 <FileUpload limit={5} name="pages" />
-                <Button
+                {
+                  !isLoading ?
+                  <Button
                   variant="contained"
                   type="submit"
                   fullWidth
@@ -84,6 +90,10 @@ export default function ChapterUploadPage() {
                 >
                   Создать главу
                 </Button>
+                :
+                <div><ImSpinner3 style={{ color: "black", fontSize: "2em" }}/></div>
+                }
+                
               </Box>
             </FormProvider>
           </Box>
