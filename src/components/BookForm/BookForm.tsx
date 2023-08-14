@@ -2,7 +2,7 @@ import { Formik, useField, Form, Field } from 'formik';
 import * as Yup from 'yup'
 import React, { useEffect, useState } from 'react'
 import { Params, useNavigate, useParams } from 'react-router-dom'
-import { IBookData } from '../../types/book.types';
+import { IBook, IBookData } from '../../types/book.types';
 import { ImSpinner3 } from "react-icons/im"
 import cl from "./BookForm.module.css"
 import CustomSelect from '../CustomSelect/CustomSelect';
@@ -17,7 +17,7 @@ export default function BookForm(): JSX.Element {
   const [initialValues, setInitial] = useState<IBookData>({ title: '', description: '', genres: [] });
   useEffect(() => {
     if (id !== 0) {
-      getBook(id).unwrap().then((book) => {
+      getBook({bookId:id}).unwrap().then((book) => {
         setInitial({ title: book.title, description: book.description, genres: book.genres })
       })
     }
@@ -31,14 +31,14 @@ export default function BookForm(): JSX.Element {
         enableReinitialize={true}
         validationSchema={Yup.object({
           title: Yup.string()
-            .max(15, 'Must be 20 characters or less')
-            .required('Required'),
+            .max(20, 'Должно быть меньше 20 символов')
+            .required('Обязательное поле'),
           description: Yup.string()
-            .max(100, 'Must be 100 characters or less')
-            .required('Required'),
+            .max(100, 'Должно быть меньше 100 символов')
+            .required('Обязательное поле'),
           genres: Yup.array()
-            .min(1, "Must be at least one genre")
-            .required("Required"),
+            .min(1, "Должен быть выбран хотя бы один жанр")
+            .required("Обязательное поле"),
         })}
         onSubmit={async(values, actions) => {
           !id ? await createBook(values) : await updateBook({id: id, ...values});

@@ -1,3 +1,4 @@
+import { IChapterInfo } from "./chapter.types";
 import { IGenre } from "./genre.types";
 
 export interface IBook{
@@ -7,6 +8,6 @@ export interface IBook{
     genres: IGenre[]
 }
 export interface IBookFull extends IBook{
-    chapters: IGenre[],
+    chapters: IChapterInfo[],
 }
 export interface IBookData extends Omit<IBook, 'id'>{}

@@ -9,6 +9,8 @@ import PrivateRoute from './util/PrivateRoute'
 import { useEffect } from 'react'
 import { useLazyGetMeQuery } from './store/api/userApi'
 import BookForm from './components/BookForm/BookForm'
+import BookPage from './pages/BookPage/BookPage'
+import ChapterUploadPage from './pages/ChapterUploadPage/ChapterUploadPage'
 export interface IPage{
   name?:string,
   path:string,
@@ -28,7 +30,9 @@ function App() {
     {name: "О сайте", path: "/about", element: <AboutPage/>, role:"ADMIN"},
     {path: "/login", element: <AuthPage isLoginPage={true}/>},
     {path: "/signup", element: <AuthPage isLoginPage={false}/>},
-    {path: "/books/store/:id", element:<BookForm/>}
+    {path: "/books/store/:id", element:<BookForm/>},
+    {path: "/books/:id", element:<BookPage/>},
+    {path: "/books/:id/chapters", element:<ChapterUploadPage/>}
   ]
   return (
     <BrowserRouter>

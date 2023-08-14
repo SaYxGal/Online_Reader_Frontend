@@ -33,9 +33,13 @@ export const bookApi = api.injectEndpoints({
                     ]   
                 : [{ type: 'Book', id: 'PARTIAL-LIST' }],
         }),
-        getBook: builder.query<IBook, number>({
-            query: (bookId) => `/books/${bookId}`,
-            providesTags: (result, error, arg) => [{ type: 'Book' as const, id: arg }]
+        getBook: builder.query<IBook|IBookFull, {bookId:number, type?:string}>({
+            query: ({bookId, type}) => ({
+                url:`/books/${bookId}`,
+                params:{type: type}
+                }),
+            
+            providesTags: (result, error, arg) => [{ type: 'Book' as const, id: arg.bookId }]
         }),
         createBook: builder.mutation<null, IBookData>({
             query: (book) => ({
@@ -65,7 +69,16 @@ export const bookApi = api.injectEndpoints({
                 { type: 'Book', id},
                 { type: 'Book', id: 'PARTIAL-LIST' },
             ]
+        }),
+        uploadBookChapter: builder.mutation<any, {id: number, formData:FormData}>({
+            query({id, formData}) {
+                return {
+                    body: formData,
+                    url: "/books/" + id + "/chapters",
+                    method: 'POST',
+                };
+              },
         })
     })
 })
-export const {useGetBooksQuery, useGetBookQuery, useLazyGetBookQuery, useCreateBookMutation, useUpdateBookMutation} = bookApi;
+export const {useGetBooksQuery, useGetBookQuery, useLazyGetBookQuery, useCreateBookMutation, useUpdateBookMutation, useUploadBookChapterMutation} = bookApi;
